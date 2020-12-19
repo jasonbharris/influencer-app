@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { db } from '../../firebase'
 import {
   StyledFormWrapper,
   StyledForm,
@@ -33,6 +34,28 @@ const Form = () => {
     console.log('submitted');
     console.log(state);
 
+    db.collection('influencers').add({
+      name: state.name,
+      email: state.email,
+      video: state.video,
+      phone: state.phone,
+      location: state.location,
+      handle: state.handle,
+      country: state.country,
+      hobbies: state.hobbies,
+      change: state.change,
+      invest: state.invest,
+      schedule: state.schedule,
+      experience: state.experience
+    })
+    .then(() => {
+      alert('Influencer form has been submitted!')
+      setState(initialState)
+    })
+    .catch(error => {
+      console.log(error.message);
+    })
+
     for (let key in state) {
       if(state[key] === '') {
         setError(`You must provide the ${key}`)
@@ -40,21 +63,8 @@ const Form = () => {
       }
     }
     setError('')
-    alert('Message has been submitted!')
-    setState({
-      name: '',
-      email: '',
-      video: '',
-      phone: '',
-      location: '',
-      handle: '',
-      country: '',
-      hobbies: '',
-      change: '',
-      invest: '',
-      schedule: '',
-      experience: ''
-    })
+
+
   }
 
   const handleInput = e => {
